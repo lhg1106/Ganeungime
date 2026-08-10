@@ -6,20 +6,16 @@
   <meta name="theme-color" content="#111827" />
   <title>가는 김에</title>
 
-  <link rel="preconnect" href="https://unpkg.com">
-  <link rel="preconnect" href="https://tile.openstreetmap.org">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 
   <style>
     :root{
       --bg:#f4f7fb;
-      --card:#ffffff;
+      --card:#fff;
       --ink:#101828;
       --muted:#667085;
       --line:#e4e7ec;
       --accent:#111827;
-      --accent-soft:#eef2ff;
       --success:#027a48;
       --warning:#b54708;
       --danger:#b42318;
@@ -47,23 +43,18 @@
       background:linear-gradient(to bottom, rgba(244,247,251,.98), rgba(244,247,251,.88), rgba(244,247,251,0));
       backdrop-filter:blur(8px);
     }
-    h1{
-      margin:0;
-      font-size:28px;
-      letter-spacing:-.6px;
-    }
-    .subtitle{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:14px;
-    }
+    h1{margin:0;font-size:28px;letter-spacing:-.6px}
+    .subtitle{margin-top:4px;color:var(--muted);font-size:14px}
+    .main{padding:14px 18px}
     .status{
       margin:10px 18px 0;
-      padding:12px 14px;
+      padding:14px;
       border-radius:16px;
       background:var(--card);
       box-shadow:var(--shadow);
       font-size:14px;
+    }
+    .status-row{
       display:flex;
       justify-content:space-between;
       gap:12px;
@@ -71,8 +62,14 @@
     }
     .status strong{font-size:14px}
     .status small{color:var(--muted)}
-    .main{
-      padding:14px 18px;
+    .debug{
+      margin-top:10px;
+      padding-top:10px;
+      border-top:1px solid var(--line);
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.6;
+      word-break:break-word;
     }
     #map{
       height:42vh;
@@ -83,11 +80,7 @@
       border:1px solid rgba(16,24,40,.06);
       background:#dfe7ef;
     }
-    .toolbar{
-      display:flex;
-      gap:10px;
-      margin:12px 0 18px;
-    }
+    .toolbar{display:flex;gap:10px;margin:12px 0 18px}
     button{
       border:none;
       border-radius:15px;
@@ -98,17 +91,8 @@
       transition:.18s ease;
     }
     button:active{transform:scale(.98)}
-    .primary{
-      background:var(--accent);
-      color:white;
-      flex:1;
-    }
-    .secondary{
-      background:white;
-      color:var(--ink);
-      border:1px solid var(--line);
-      flex:1;
-    }
+    .primary{background:var(--accent);color:#fff;flex:1}
+    .secondary{background:#fff;color:var(--ink);border:1px solid var(--line);flex:1}
     .panel{
       background:var(--card);
       border-radius:var(--radius);
@@ -116,40 +100,19 @@
       padding:18px;
       margin-top:16px;
     }
-    .panel h2{
-      margin:0 0 12px;
-      font-size:19px;
-      letter-spacing:-.3px;
-    }
-    .field{
-      margin-top:12px;
-    }
-    label{
-      display:block;
-      font-size:13px;
-      font-weight:700;
-      color:#344054;
-      margin-bottom:7px;
-    }
-    input, select{
+    .panel h2{margin:0 0 12px;font-size:19px;letter-spacing:-.3px}
+    .field{margin-top:12px}
+    label{display:block;font-size:13px;font-weight:700;color:#344054;margin-bottom:7px}
+    input,select{
       width:100%;
       border:1px solid var(--line);
       border-radius:14px;
       padding:13px 14px;
       font-size:15px;
-      background:white;
+      background:#fff;
       outline:none;
     }
-    input:focus, select:focus{
-      border-color:#98a2b3;
-      box-shadow:0 0 0 3px rgba(152,162,179,.13);
-    }
-    .hint{
-      color:var(--muted);
-      font-size:12px;
-      margin-top:7px;
-      line-height:1.45;
-    }
+    .hint{color:var(--muted);font-size:12px;margin-top:7px;line-height:1.45}
     .selected-place{
       margin-top:10px;
       padding:11px 12px;
@@ -158,39 +121,23 @@
       border:1px dashed #cbd5e1;
       font-size:13px;
     }
-    .task-list{
-      display:grid;
-      gap:12px;
-    }
+    .task-list{display:grid;gap:12px}
     .task-card{
       border:1px solid var(--line);
       border-radius:18px;
       padding:14px;
       background:#fff;
     }
-    .task-card.near{
-      border-color:#a6f4c5;
-      background:#f6fef9;
-    }
-    .task-card.done{
-      opacity:.62;
-    }
+    .task-card.near{border-color:#a6f4c5;background:#f6fef9}
+    .task-card.done{opacity:.62}
     .task-top{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
       gap:12px;
     }
-    .task-title{
-      font-size:16px;
-      font-weight:800;
-      margin-bottom:5px;
-    }
-    .task-meta{
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.5;
-    }
+    .task-title{font-size:16px;font-weight:800;margin-bottom:5px}
+    .task-meta{font-size:13px;color:var(--muted);line-height:1.5}
     .badge{
       display:inline-flex;
       align-items:center;
@@ -202,15 +149,8 @@
       background:#f2f4f7;
       color:#344054;
     }
-    .badge.near{
-      background:#dcfae6;
-      color:var(--success);
-    }
-    .task-actions{
-      display:flex;
-      gap:8px;
-      margin-top:12px;
-    }
+    .badge.near{background:#dcfae6;color:var(--success)}
+    .task-actions{display:flex;gap:8px;margin-top:12px}
     .task-actions button{
       padding:9px 10px;
       font-size:12px;
@@ -218,32 +158,17 @@
       color:#344054;
       flex:1;
     }
-    .task-actions .danger{
-      color:var(--danger);
-      background:#fff1f0;
-    }
-    .empty{
-      color:var(--muted);
-      font-size:14px;
-      text-align:center;
-      padding:24px 8px 8px;
-    }
+    .task-actions .danger{color:var(--danger);background:#fff1f0}
+    .empty{color:var(--muted);font-size:14px;text-align:center;padding:24px 8px 8px}
     .recommend{
       border-radius:18px;
       background:#101828;
-      color:white;
+      color:#fff;
       padding:16px;
       margin-top:12px;
     }
-    .recommend strong{
-      display:block;
-      font-size:16px;
-      margin-bottom:6px;
-    }
-    .recommend small{
-      color:#d0d5dd;
-      line-height:1.5;
-    }
+    .recommend strong{display:block;font-size:16px;margin-bottom:6px}
+    .recommend small{color:#d0d5dd;line-height:1.5}
     .footer-note{
       text-align:center;
       color:var(--muted);
@@ -251,10 +176,8 @@
       padding:18px 22px;
       line-height:1.5;
     }
-    .leaflet-control-attribution{
-      font-size:9px;
-    }
-    @media (max-width:420px){
+    .leaflet-control-attribution{font-size:9px}
+    @media(max-width:420px){
       h1{font-size:25px}
       #map{height:38vh;min-height:290px}
     }
@@ -268,22 +191,27 @@
   </header>
 
   <div class="status">
-    <div>
-      <strong id="locationStatus">위치 확인 전</strong><br>
-      <small id="coordsText">GPS 권한이 필요합니다.</small>
+    <div class="status-row">
+      <div>
+        <strong id="locationStatus">위치 사용 전</strong><br>
+        <small id="coordsText">아래 버튼을 눌러 GPS를 요청하세요.</small>
+      </div>
+      <span>📍</span>
     </div>
-    <span id="gpsDot">📍</span>
+    <div id="debugText" class="debug">
+      보안 연결: 확인 중 · Geolocation API: 확인 중 · 권한 상태: 확인 중
+    </div>
   </div>
 
   <main class="main">
     <div id="map"></div>
 
     <div class="toolbar">
-      <button class="secondary" id="locateBtn">내 위치로 이동</button>
+      <button class="primary" id="gpsBtn">내 위치 사용하기</button>
       <button class="secondary" id="pickBtn">지도에서 장소 찍기</button>
     </div>
 
-    <section class="panel" id="recommendPanel">
+    <section class="panel">
       <h2>지금 가는 김에</h2>
       <div id="recommendContent" class="empty">GPS 위치를 잡으면 가까운 할 일을 추천합니다.</div>
     </section>
@@ -310,7 +238,9 @@
         </select>
       </div>
 
-      <div id="selectedPlace" class="selected-place">아직 장소를 지정하지 않았습니다. 지도에서 원하는 위치를 눌러주세요.</div>
+      <div id="selectedPlace" class="selected-place">
+        아직 장소를 지정하지 않았습니다. 지도에서 원하는 위치를 눌러주세요.
+      </div>
 
       <div class="toolbar" style="margin-bottom:0">
         <button class="primary" id="saveTaskBtn">이 할 일 저장</button>
@@ -325,15 +255,14 @@
 
     <div class="footer-note">
       데이터는 이 브라우저의 로컬 저장소에만 저장됩니다.<br>
-      GPS는 브라우저 권한이 허용된 경우에만 작동합니다.
+      GPS는 사용자가 버튼을 눌렀을 때만 요청합니다.
     </div>
   </main>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
-  const STORAGE_KEY = "ganeun-gime-tasks-v1";
+  const STORAGE_KEY = "ganeun-gime-tasks-v2";
 
   const map = L.map("map", { zoomControl: true }).setView([37.5665, 126.9780], 13);
 
@@ -345,6 +274,7 @@
   let userLatLng = null;
   let userMarker = null;
   let userAccuracyCircle = null;
+  let watchId = null;
   let pickedLatLng = null;
   let pickedMarker = null;
   let pickMode = false;
@@ -353,12 +283,41 @@
 
   const locationStatus = document.getElementById("locationStatus");
   const coordsText = document.getElementById("coordsText");
+  const debugText = document.getElementById("debugText");
   const selectedPlace = document.getElementById("selectedPlace");
   const taskList = document.getElementById("taskList");
   const recommendContent = document.getElementById("recommendContent");
   const taskTitle = document.getElementById("taskTitle");
   const placeName = document.getElementById("placeName");
   const radius = document.getElementById("radius");
+  const gpsBtn = document.getElementById("gpsBtn");
+
+  let permissionState = "unknown";
+
+  async function updateDebug() {
+    const secure = window.isSecureContext ? "예" : "아니오";
+    const geo = "geolocation" in navigator ? "지원" : "미지원";
+
+    if (navigator.permissions && navigator.permissions.query) {
+      try {
+        const result = await navigator.permissions.query({ name: "geolocation" });
+        permissionState = result.state;
+        result.onchange = () => {
+          permissionState = result.state;
+          updateDebug();
+        };
+      } catch (e) {
+        permissionState = "확인 불가";
+      }
+    } else {
+      permissionState = "브라우저에서 조회 미지원";
+    }
+
+    debugText.textContent =
+      `보안 연결: ${secure} · Geolocation API: ${geo} · 권한 상태: ${permissionState}`;
+  }
+
+  updateDebug();
 
   function saveTasks() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
@@ -381,66 +340,101 @@
     return 2 * R * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
   }
 
-  function updateUserPosition(lat, lng, accuracy) {
-    userLatLng = { lat, lng };
+  function handlePosition(pos, centerMap = false) {
+    const { latitude, longitude, accuracy } = pos.coords;
+    userLatLng = { lat: latitude, lng: longitude };
 
     if (!userMarker) {
-      userMarker = L.marker([lat, lng]).addTo(map).bindPopup("현재 위치");
+      userMarker = L.marker([latitude, longitude]).addTo(map).bindPopup("현재 위치");
     } else {
-      userMarker.setLatLng([lat, lng]);
+      userMarker.setLatLng([latitude, longitude]);
     }
 
-    if (userAccuracyCircle) {
-      userAccuracyCircle.setLatLng([lat, lng]).setRadius(accuracy || 20);
-    } else {
-      userAccuracyCircle = L.circle([lat, lng], {
+    if (!userAccuracyCircle) {
+      userAccuracyCircle = L.circle([latitude, longitude], {
         radius: accuracy || 20,
         weight: 1,
         opacity: .35,
         fillOpacity: .08
       }).addTo(map);
+    } else {
+      userAccuracyCircle.setLatLng([latitude, longitude]).setRadius(accuracy || 20);
     }
 
     locationStatus.textContent = "현재 위치 확인됨";
-    coordsText.textContent = `${lat.toFixed(5)}, ${lng.toFixed(5)} · 오차 약 ${Math.round(accuracy || 0)}m`;
+    coordsText.textContent = `${latitude.toFixed(5)}, ${longitude.toFixed(5)} · 오차 약 ${Math.round(accuracy || 0)}m`;
+    gpsBtn.textContent = "내 위치로 이동";
+
+    if (centerMap) map.setView([latitude, longitude], 16);
+
     renderTasks();
     renderRecommendation();
   }
 
-  function locate() {
-    if (!navigator.geolocation) {
-      locationStatus.textContent = "이 브라우저는 GPS를 지원하지 않습니다.";
+  function explainGeoError(err) {
+    if (!err) return "알 수 없는 위치 오류";
+    if (err.code === 1) return "위치 권한이 거부되었습니다.";
+    if (err.code === 2) return "기기가 현재 위치를 확인하지 못했습니다.";
+    if (err.code === 3) return "위치 확인 시간이 초과되었습니다.";
+    return err.message || "알 수 없는 위치 오류";
+  }
+
+  function startWatchAfterSuccess() {
+    if (watchId !== null || !navigator.geolocation) return;
+
+    watchId = navigator.geolocation.watchPosition(
+      pos => handlePosition(pos, false),
+      err => {
+        console.log("watchPosition error:", err);
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 10000,
+        timeout: 20000
+      }
+    );
+  }
+
+  function requestLocation() {
+    if (!window.isSecureContext) {
+      locationStatus.textContent = "HTTPS 연결이 필요합니다.";
+      coordsText.textContent = "GitHub Pages 같은 HTTPS 주소에서 열어주세요.";
       return;
     }
 
-    locationStatus.textContent = "현재 위치 확인 중...";
+    if (!navigator.geolocation) {
+      locationStatus.textContent = "GPS API 미지원";
+      coordsText.textContent = "이 브라우저에서는 위치 기능을 사용할 수 없습니다.";
+      return;
+    }
+
+    locationStatus.textContent = "위치 권한 요청 중...";
+    coordsText.textContent = "잠시만 기다려주세요.";
+
     navigator.geolocation.getCurrentPosition(
       pos => {
-        const { latitude, longitude, accuracy } = pos.coords;
-        updateUserPosition(latitude, longitude, accuracy);
-        map.setView([latitude, longitude], 16);
+        handlePosition(pos, true);
+        startWatchAfterSuccess();
+        updateDebug();
       },
       err => {
         locationStatus.textContent = "위치를 가져오지 못했습니다.";
-        coordsText.textContent = err.message || "위치 권한을 확인해주세요.";
+        coordsText.textContent = `${explainGeoError(err)} (${err.message || "메시지 없음"})`;
+        updateDebug();
       },
-      { enableHighAccuracy: true, timeout: 12000, maximumAge: 5000 }
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0
+      }
     );
   }
 
-  if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(
-      pos => updateUserPosition(pos.coords.latitude, pos.coords.longitude, pos.coords.accuracy),
-      () => {},
-      { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
-    );
-  }
-
-  document.getElementById("locateBtn").addEventListener("click", () => {
+  gpsBtn.addEventListener("click", () => {
     if (userLatLng) {
       map.setView([userLatLng.lat, userLatLng.lng], 16);
     } else {
-      locate();
+      requestLocation();
     }
   });
 
@@ -453,12 +447,18 @@
 
   map.on("click", e => {
     if (!pickMode) return;
+
     pickedLatLng = { lat: e.latlng.lat, lng: e.latlng.lng };
 
     if (pickedMarker) map.removeLayer(pickedMarker);
-    pickedMarker = L.marker(e.latlng).addTo(map).bindPopup("선택한 장소").openPopup();
 
-    selectedPlace.textContent = `선택된 위치: ${pickedLatLng.lat.toFixed(5)}, ${pickedLatLng.lng.toFixed(5)}`;
+    pickedMarker = L.marker(e.latlng).addTo(map)
+      .bindPopup("선택한 장소")
+      .openPopup();
+
+    selectedPlace.textContent =
+      `선택된 위치: ${pickedLatLng.lat.toFixed(5)}, ${pickedLatLng.lng.toFixed(5)}`;
+
     pickMode = false;
 
     const btn = document.getElementById("pickBtn");
@@ -475,6 +475,7 @@
       alert("할 일을 입력해주세요.");
       return;
     }
+
     if (!pickedLatLng) {
       alert("지도에서 장소를 먼저 지정해주세요.");
       return;
@@ -496,7 +497,9 @@
     taskTitle.value = "";
     placeName.value = "";
     pickedLatLng = null;
-    selectedPlace.textContent = "아직 장소를 지정하지 않았습니다. 지도에서 원하는 위치를 눌러주세요.";
+
+    selectedPlace.textContent =
+      "아직 장소를 지정하지 않았습니다. 지도에서 원하는 위치를 눌러주세요.";
 
     if (pickedMarker) {
       map.removeLayer(pickedMarker);
@@ -507,6 +510,15 @@
     renderRecommendation();
   });
 
+  function escapeHtml(text) {
+    return String(text)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
   function renderTaskMarkers() {
     taskMarkers.forEach(m => map.removeLayer(m));
     taskMarkers = [];
@@ -516,15 +528,6 @@
       m.bindPopup(`<strong>${escapeHtml(t.title)}</strong><br>${escapeHtml(t.place)}`);
       taskMarkers.push(m);
     });
-  }
-
-  function escapeHtml(text) {
-    return String(text)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
   }
 
   function renderTasks() {
@@ -548,6 +551,7 @@
 
     taskList.innerHTML = withDistance.map(t => {
       const near = t.distance != null && t.distance <= t.radius && !t.done;
+
       return `
         <div class="task-card ${near ? "near" : ""} ${t.done ? "done" : ""}">
           <div class="task-top">
@@ -558,6 +562,7 @@
                 ${t.distance == null ? "현재 위치 확인 전" : `현재 위치에서 ${formatDistance(t.distance)}`}
               </div>
             </div>
+
             <span class="badge ${near ? "near" : ""}">
               ${t.done ? "완료" : near ? "지금 가능" : `${t.radius}m 알림`}
             </span>
@@ -597,6 +602,7 @@
     const best = near[0] || ranked[0];
 
     recommendContent.className = "recommend";
+
     if (near.length > 0) {
       recommendContent.innerHTML = `
         <strong>지금 처리하기 좋아요: ${escapeHtml(best.title)}</strong>
@@ -621,6 +627,7 @@
   window.toggleDone = id => {
     const t = tasks.find(x => x.id === id);
     if (!t) return;
+
     t.done = !t.done;
     saveTasks();
     renderTasks();
@@ -629,6 +636,7 @@
 
   window.deleteTask = id => {
     if (!confirm("이 할 일을 삭제할까요?")) return;
+
     tasks = tasks.filter(x => x.id !== id);
     saveTasks();
     renderTasks();
@@ -637,7 +645,6 @@
 
   renderTasks();
   renderRecommendation();
-  setTimeout(locate, 500);
 </script>
 </body>
 </html>
